@@ -1,0 +1,11 @@
+@import url('satoshi.css');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@plugin "daisyui" {
+    themes: winter --default, dim --prefersdark;
+}
+
+@theme {
+    --font-sans: Satoshi-Regular, sans-serif;
+}
