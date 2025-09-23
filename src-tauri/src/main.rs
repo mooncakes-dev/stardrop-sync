@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    stardrop_sync_lib::run()
+    stardrop_sync_lib::run();
 }
