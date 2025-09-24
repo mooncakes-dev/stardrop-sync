@@ -16,7 +16,7 @@ pub fn check_for_default_saves_folder() -> String {
 pub fn list_all_save_folders() -> Result<Vec<String>, String> {
     let os_path = get_os_save_string();
     let user_folders = get_all_save_folders(os_path).map_err(|err| err.to_string())?;
-    Ok((user_folders))
+    Ok(user_folders)
 }
 
 #[tauri::command]
@@ -50,7 +50,7 @@ fn get_all_save_folders(os_path: PathBuf) -> Result<Vec<String>, String> {
             available_save_folder_arr.push(convert_path_to_string(folders_map.path()));
         }
     }
-    if (available_save_folder_arr.is_empty()) {
+    if available_save_folder_arr.is_empty() {
         return Err("No save folders found".parse().unwrap());
     }
     Ok(available_save_folder_arr)
