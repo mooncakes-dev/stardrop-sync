@@ -1,6 +1,15 @@
-use std::{fs};
-use std::path::{PathBuf};
+use crate::game_files;
 use chrono::prelude::*;
+use serde::Serialize;
+use std::fs;
+use std::path::PathBuf;
+use tauri::Emitter;
+
+#[derive(Serialize, Clone)]
+struct LogMessage {
+    level: String,
+    message: String,
+}
 
 #[tauri::command]
 pub fn set_save_file_path(save_path: &str) -> String {
@@ -20,24 +29,42 @@ pub fn list_all_save_folders() -> Result<Vec<String>, String> {
 }
 
 #[tauri::command]
-pub fn check_for_updates(selected_save_file: &str) -> Result<String, String>{
+pub fn check_for_updates(selected_save_file: &str) -> Result<String, String> {
     // Figure out how to pass it in from the client side pls
-    let modified_time = check_for_latest_update_time(selected_save_file).map_err(|err| err.to_string())?;
+    let modified_time =
+        check_for_latest_update_time(selected_save_file).map_err(|err| err.to_string())?;
     let time_string = convert_date_to_string(modified_time);
     Ok(time_string)
 }
 
+#[tauri::command]
+pub fn start_watching(app: tauri::AppHandle, path: &str) {
+    // let modified_time = check_for_latest_update_time(path).map_err(|err| err.to_string())?;
+    // let time_string = convert_date_to_string(modified_time);
+    let message = format!("Watching directory {}", path);
+    emit_log_message(app, message);
+    // Ok(time_string)
+}
+
 /* Util Functions */
 
+fn emit_log_message(app: tauri::AppHandle, message: String) {
+    let _ = app.emit(
+        "log",
+        LogMessage {
+            level: "info".into(),
+            message: message.clone(),
+        },
+    );
+}
 fn get_saves_data_dir() -> String {
     let os_path = get_os_save_string();
     convert_path_to_string(os_path)
 }
 
 fn get_os_save_string() -> PathBuf {
-    let os_save_path = dirs::data_dir().unwrap_or_else(||
-        std::env::current_dir().expect("error while getting current directory")
-    );
+    let os_save_path = dirs::data_dir()
+        .unwrap_or_else(|| std::env::current_dir().expect("error while getting current directory"));
     os_save_path.join("StardewValley").join("Saves")
 }
 
