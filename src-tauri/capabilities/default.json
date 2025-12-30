@@ -10,6 +10,17 @@
     "opener:default",
     "dialog:default",
     "fs:default",
-    "store:default"
+    "store:default",
+    "fs:allow-app-read-recursive",
+    "fs:allow-read-dir",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {"path": "$APPDATA/../Roaming/StardewValley/**"},
+        {"path": "$HOME/.config/StardewValley/**"},
+        {"path": "**"}
+      ]
+    },
+    "os:default"
   ]
 }
