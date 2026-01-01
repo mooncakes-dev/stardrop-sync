@@ -5,21 +5,8 @@
 	import GameStore from '$lib/stores/gameStore';
 	import { onMount } from 'svelte';
 	import { DASHBOARD_ROUTE_PATH, SAVE_FOLDER_STORE_KEY } from '$lib/utils/constants';
-	import {
-		getStardewPathInstructions,
-		getStardewSavePath,
-		listSaveFolders,
-		promptUserForStardewPath,
-		resetStardewPath,
-	} from '$lib/utils/stardewPaths';
-
-	interface ISaveFolder {
-		name: string;
-		displayName?: string;
-		path?: string;
-		active?: boolean;
-		lastActive?: boolean;
-	}
+	import { getStardewPathInstructions, getStardewSavePath, listSaveFolders, promptUserForStardewPath } from '$lib/utils/stardewPaths';
+	import type { ISaveFolder } from '$lib/utils/models/ISaveFolder';
 
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
