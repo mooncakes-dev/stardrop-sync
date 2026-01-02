@@ -13,6 +13,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Sprout } from '@lucide/svelte';
 	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+	import LoadingSpinner from '$lib/components/loading-spinner.svelte';
 
 	let saveFolderService = new SaveFolderService();
 
@@ -231,35 +232,39 @@
 </script>
 
 {#if isLoading}
-	<p>Loading...</p>
+	<div class="loading-container flex justify-center">
+		<LoadingSpinner message="Watering crops and getting everything ready..." />
+	</div>
 {:else if !isLoading}
-	<h2 class="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 flex items-center gap-2">
-		<Sprout />
-		Farm saves
-	</h2>
-	<div class="save-cards-container flex gap-4 flex-row flex-wrap md:flex-nowrap w-full">
-		{#if saveFolders.length > 0}
-			{#each saveFolders as folder}
-				<Card.Root
-					class="my-1 w-full max-w-sm 
-					{folder.active ? 'ring-2 ring-indigo-200 shadow-lg shadow-indigo-500/50 bg-base-300' : 'card-border shadow-sm bg-base-100'}"
-				>
-					<Card.Header>
-						<!-- <img class="save-card-icon" src={junimoImage} alt="junimo icon" /> -->
-						<Card.Title>{folder.displayName}</Card.Title>
-						<Card.Description>Recent save date: {folder.dateModified}</Card.Description>
-						<Card.Action>
-							<Button variant={folder.active ? 'ghost' : 'outline'} size="sm" onclick={() => setSaveInformation(folder.name, 'active')}>
-								{folder.active ? 'Selected' : 'Select'}
-							</Button>
-						</Card.Action>
-					</Card.Header>
-				</Card.Root>
-			{/each}
-		{/if}
+	<div class="dashboard-header flex flex-col gap-4">
+		<h2 class="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 flex items-center gap-2">
+			<Sprout />
+			Farm saves
+		</h2>
+		<div class="save-cards-container flex gap-4 flex-row flex-wrap md:flex-nowrap w-full">
+			{#if saveFolders.length > 0}
+				{#each saveFolders as folder}
+					<Card.Root
+						class="my-1 w-full max-w-sm 
+					{folder.active ? 'ring-2 ring-lime-400/50 shadow-md shadow-lime-500/50 dark:shadow-lime-300/50' : 'card-border shadow-md bg-base-100'}"
+					>
+						<Card.Header>
+							<!-- <img class="save-card-icon" src={junimoImage} alt="junimo icon" /> -->
+							<Card.Title>{folder.displayName}</Card.Title>
+							<Card.Description>Recent save date: {folder.dateModified}</Card.Description>
+							<Card.Action>
+								<Button variant={folder.active ? 'ghost' : 'outline'} size="sm" onclick={() => setSaveInformation(folder.name, 'active')}>
+									{folder.active ? 'Selected' : 'Select'}
+								</Button>
+							</Card.Action>
+						</Card.Header>
+					</Card.Root>
+				{/each}
+			{/if}
+		</div>
 	</div>
 	<div class="activity-log--container py-4 flex flex-col gap-4">
-		<div class="activity-log--header flex flex-col gap-2">
+		<div class="activity-log--header flex flex-col gap-1.5">
 			<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Activity Log</h3>
 			<p class="text-muted-foreground text-sm">Track your upload progress and events</p>
 		</div>

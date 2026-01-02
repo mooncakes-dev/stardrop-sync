@@ -6,8 +6,11 @@
 	import { Separator } from '$lib/components/ui/separator/index.js';
 </script>
 
-<NavigationMenu.Root class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-	<NavigationMenu.List class="flex items-center gap-1 sm:gap-2">
+<NavigationMenu.Root
+	class="mx-auto flex w-full max-w-7xl items-center justify-between px-3
+	hover:shadow-lg transition-shadow duration-300 shadow-stone-300/50 dark:shadow-stone-700/50 rounded-xl h-13 "
+>
+	<NavigationMenu.List class="flex items-center gap-1 sm:gap-2 px-1 md:px-0">
 		<NavigationMenu.Item>
 			<NavigationMenu.Link>
 				{#snippet child()}
@@ -17,7 +20,7 @@
 		</NavigationMenu.Item>
 	</NavigationMenu.List>
 
-	<NavigationMenu.List class="flex h-5 items-center space-x-4 gap-1 sm:gap-2">
+	<NavigationMenu.List class="flex h-5 items-center space-x-4 gap-1 sm:gap-2 px-1 md:px-0">
 		<NavigationMenu.Item>
 			<Button onclick={toggleMode} variant="ghost" size="icon" aria-label="Toggle theme">
 				<SunIcon class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 !transition-all dark:scale-0 dark:-rotate-90" />
