@@ -9,6 +9,10 @@
 	import type { ISaveFolder, SaveFolderProperty } from '$lib/utils/models/ISaveFolder';
 	import { join } from '@tauri-apps/api/path';
 	import { findByName } from '$lib/utils/commonUtils';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { Button } from '$lib/components/ui/button';
+	import { Sprout } from '@lucide/svelte';
+	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 
 	let saveFolderService = new SaveFolderService();
 
@@ -229,30 +233,37 @@
 {#if isLoading}
 	<p>Loading...</p>
 {:else if !isLoading}
+	<h2 class="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 flex items-center gap-2">
+		<Sprout />
+		Farm saves
+	</h2>
 	<div class="save-cards-container flex gap-4 flex-row flex-wrap md:flex-nowrap w-full">
 		{#if saveFolders.length > 0}
 			{#each saveFolders as folder}
-				<div
-					class="card card-side w-full card-xs
-				{folder.active ? 'ring-2 ring-indigo-200 shadow-lg shadow-indigo-500/50 bg-base-300' : 'card-border shadow-sm bg-base-100'}"
+				<Card.Root
+					class="my-1 w-full max-w-sm 
+					{folder.active ? 'ring-2 ring-indigo-200 shadow-lg shadow-indigo-500/50 bg-base-300' : 'card-border shadow-sm bg-base-100'}"
 				>
-					<img class="save-card-icon" src={junimoImage} alt="junimo icon" />
-					<div class="card-body flex flex-row items-center justify-flex-start gap-4 my-1">
-						<div class="tooltip" data-tip="Recent save date: {folder.dateModified}">
-							<h2 class="card-title">{folder.displayName}</h2>
-						</div>
-						<div class="card-actions">
-							<button
-								class="btn btn-ghost btn-sm {folder.active ? 'btn-disabled' : 'btn-ghost'}"
-								onclick={() => setSaveInformation(folder.name, 'active')}
-							>
+					<Card.Header>
+						<!-- <img class="save-card-icon" src={junimoImage} alt="junimo icon" /> -->
+						<Card.Title>{folder.displayName}</Card.Title>
+						<Card.Description>Recent save date: {folder.dateModified}</Card.Description>
+						<Card.Action>
+							<Button variant={folder.active ? 'ghost' : 'outline'} size="sm" onclick={() => setSaveInformation(folder.name, 'active')}>
 								{folder.active ? 'Selected' : 'Select'}
-							</button>
-						</div>
-					</div>
-				</div>
+							</Button>
+						</Card.Action>
+					</Card.Header>
+				</Card.Root>
 			{/each}
 		{/if}
+	</div>
+	<div class="activity-log--container py-4 flex flex-col gap-4">
+		<div class="activity-log--header flex flex-col gap-2">
+			<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Activity Log</h3>
+			<p class="text-muted-foreground text-sm">Track your upload progress and events</p>
+		</div>
+		<ScrollArea class="h-[300px] w-[full] rounded-md border p-4"></ScrollArea>
 	</div>
 {:else if error}
 	<div class="error-container prose mx-auto">
