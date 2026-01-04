@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { open } from '@tauri-apps/plugin-dialog';
-	import { readDir, type DirEntry } from '@tauri-apps/plugin-fs';
 	import { goto } from '$app/navigation';
 	import GameStore from '$lib/stores/gameStore';
 	import { onMount } from 'svelte';
 	import { DASHBOARD_ROUTE_PATH, SAVE_FOLDER_STORE_KEY } from '$lib/utils/constants';
 	import { getStardewPathInstructions, getStardewSavePath, listSaveFolders, promptUserForStardewPath } from '$lib/utils/stardewPaths';
 	import type { ISaveFolder } from '$lib/utils/models/ISaveFolder';
+	import LoadingSpinner from '$lib/components/loading-spinner.svelte';
 
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
@@ -82,8 +81,8 @@
 
 <div class="landing-container prose mx-auto">
 	{#if isLoading}
-		<div class="loading-container">
-			<p>Loading...</p>
+		<div class="loading-container flex justify-center">
+			<LoadingSpinner message="Watering crops and getting everything ready..." />
 		</div>
 	{:else if error}
 		<div class="alert alert-error">

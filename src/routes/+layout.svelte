@@ -1,29 +1,15 @@
 <script lang="ts">
 	import '../app.css';
-	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
-	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
-	import type { Snippet } from 'svelte';
+	import { ModeWatcher, toggleMode } from 'mode-watcher';
+	import NavigationMenu from './navigationMenu/+page.svelte';
+	import { Separator } from '$lib/components/ui/separator';
 
-	interface Props {
-		children: Snippet;
-	}
-
-	let { children }: Props = $props();
-
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				staleTime: 1000 * 60 * 5,
-				retry: 3,
-				retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-			},
-		},
-	});
+	let { children } = $props();
 </script>
 
-<QueryClientProvider client={queryClient}>
-	<main class="container">
-		{@render children()}
-	</main>
-	<SvelteQueryDevtools />
-</QueryClientProvider>
+<ModeWatcher />
+<main class="mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
+	<NavigationMenu></NavigationMenu>
+
+	{@render children()}
+</main>
